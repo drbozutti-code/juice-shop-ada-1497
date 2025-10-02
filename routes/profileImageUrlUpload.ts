@@ -23,7 +23,7 @@ export function profileImageUrlUpload () {
       try {
         parsedUrl = new URL(url)
       } catch (e) {
-        return next(new Error('Invalid image URL'))
+        next(new Error('Invalid image URL')); return
       }
       const allowedHosts = ['imgur.com', 'images.com'] // <-- customize as needed
       if (
@@ -31,7 +31,7 @@ export function profileImageUrlUpload () {
         !allowedHosts.some((h) => parsedUrl.hostname === h || parsedUrl.hostname.endsWith('.' + h))
       ) {
         logger.warn(`Blocked upload from disallowed host or protocol: ${parsedUrl.hostname} / ${parsedUrl.protocol}`)
-        return next(new Error('Image URL uses an unsupported host or protocol'))
+        next(new Error('Image URL uses an unsupported host or protocol')); return
       }
       const loggedInUser = security.authenticatedUsers.get(req.cookies.token)
       if (loggedInUser) {
